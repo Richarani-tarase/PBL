@@ -2,9 +2,9 @@ import { useState } from "react";
 import axios from "axios";
 
 export default function App() {
-  const [code, setCode] = useState(`matrix A = [1,2;3,4]
-matrix B = [5,6;7,8]
-C = A + B`);
+  const [code, setCode] = useState(`matrix A = [[1,2];[3,4]]
+matrix B = [[5,6];[7,8]]
+C = A.T`);
   const [result, setResult] = useState(null);
 
   const runCode = async () => {
