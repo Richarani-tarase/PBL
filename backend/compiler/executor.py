@@ -10,7 +10,6 @@ def execute(program):
             env[stmt.name] = np.array(stmt.value.rows)
         elif isinstance(stmt, Assignment):
             env[stmt.name] = evaluate_expression(stmt.value, env)
-
     return env
 
 def evaluate_expression(expr, env):
@@ -22,6 +21,12 @@ def evaluate_expression(expr, env):
     elif isinstance(expr, Transpose):
         val = evaluate_expression(expr.value, env)
         return np.transpose(val)
+    elif isinstance(expr, Inverse):
+        val = evaluate_expression(expr.value, env)
+        try:
+            return np.linalg.inv(val)
+        except np.linalg.LinAlgError:
+            raise Exception("Matrix is not invertible.")
 
     elif isinstance(expr, BinaryOp):
         left = evaluate_expression(expr.left, env)
@@ -31,9 +36,7 @@ def evaluate_expression(expr, env):
         elif expr.op == '-':
             return left - right
         elif expr.op == '*':
-            return np.matmul(left, right)
-        elif expr.op == 'T':  # Handling matrix transpose
-            return np.transpose(left)
+           return np.matmul(left, right)
         else:
             raise Exception(f"Unknown operator {expr.op}")
     else:
