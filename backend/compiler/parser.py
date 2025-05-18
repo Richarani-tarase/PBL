@@ -2,7 +2,7 @@ from compiler.ast import *
 from compiler.lexer import tokenize
 
 class Parser:
-    def __init__(self, code):
+    def _init_(self, code):
         self.tokens = tokenize(code)  # Assuming tokenize is imported from lexer.py
         self.pos = 0
 
@@ -83,6 +83,8 @@ class Parser:
                     return Transpose(Var(var_name))
                 elif self.match("INV"):
                     return Inverse(Var(var_name))
+                elif self.match("DET"):
+                    return Determinant(Var(var_name))
                 else:
                     raise SyntaxError("Unknown property after '.'")
 
@@ -116,4 +118,4 @@ class Parser:
 
 def parse_code(code):
     parser = Parser(code)
-    return parser.parse() 
+    return parser.parse()

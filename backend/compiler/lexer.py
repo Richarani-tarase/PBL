@@ -9,6 +9,7 @@ TOKEN_SPEC = [
     ('MATRIX',    r'\bmatrix\b'),
     ('INV',       r'\binv\b'),       # <-- Add this
     ('TRANSPOSE', r'\bT\b'),         # <-- Add this too
+    ('DET',       r'\bdet\b'), 
     ('IDENT',     r'[A-Za-z_][A-Za-z0-9_]*'),  # Must come after INV and TRANSPOSE
     ('EQUAL',     r'='),
     ('PLUS',      r'\+'),

@@ -1,9 +1,8 @@
-from lark.tree import Tree
 from compiler.ast import *
 
 def check_expr(expr):
-    if isinstance(expr, (Transpose, Inverse)):
-        check_expr(expr.value)
+    if isinstance(expr, (Transpose, Inverse, Determinant)):  # <-- Include Determinant here
+        check_expr(expr.value if hasattr(expr, 'value') else expr.matrix_expr)
     elif isinstance(expr, BinaryOp):
         check_expr(expr.left)
         check_expr(expr.right)

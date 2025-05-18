@@ -16,7 +16,6 @@ def evaluate_expression(expr, env):
     if isinstance(expr, Var):
         return env[expr.name]
     elif isinstance(expr, MatrixLiteral):
-        # Matrix literal is a 2D array (list of lists)
         return np.array(expr.rows)
     elif isinstance(expr, Transpose):
         val = evaluate_expression(expr.value, env)
@@ -27,7 +26,9 @@ def evaluate_expression(expr, env):
             return np.linalg.inv(val)
         except np.linalg.LinAlgError:
             raise Exception("Matrix is not invertible.")
-
+    elif isinstance(expr, Determinant):  # <-- Moved here
+        matrix = evaluate_expression(expr.matrix_expr, env)
+        return np.linalg.det(matrix)
     elif isinstance(expr, BinaryOp):
         left = evaluate_expression(expr.left, env)
         right = evaluate_expression(expr.right, env)
@@ -36,7 +37,7 @@ def evaluate_expression(expr, env):
         elif expr.op == '-':
             return left - right
         elif expr.op == '*':
-           return np.matmul(left, right)
+            return np.matmul(left, right)
         else:
             raise Exception(f"Unknown operator {expr.op}")
     else:
